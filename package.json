@@ -12,6 +12,7 @@
   "dependencies": {
     "react": "18.2.0",
     "react-native": "0.71.8",
+    "react-native-permissions": "^3.8.0",
     "react-native-splash-screen": "^3.3.0",
     "twrnc": "^3.6.1"
   },
