@@ -7,14 +7,20 @@ const SmsListenerComp = () => {
     requestSMSPermission();
     const smsReceivedSubscription = addSmsReceivedListener(event => {
       const smsList = event.smsList;
-      // Handle the received SMS messages
-      console.log(smsList);
+      const extractedBodies = [];
+
+      smsList.forEach(message => {
+        const start = message.indexOf('body:') + 5; // add 5 to skip "body:"
+        const end = message.indexOf('service_center:');
+        const extractedBody = message.substring(start, end).trim();
+        extractedBodies.push(extractedBody);
+      });
+
+      console.log(extractedBodies);
     });
 
-    // Start listening for SMS messages
     startSmsListener();
 
-    // Clean up the subscription when the component unmounts
     return () => {
       smsReceivedSubscription.remove();
     };
