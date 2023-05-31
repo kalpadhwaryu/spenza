@@ -1,32 +1,22 @@
 import React, {useEffect} from 'react';
 import {View, Text, PermissionsAndroid} from 'react-native';
-import {NativeModules, NativeEventEmitter} from 'react-native';
-
-const SmsListenerModule = NativeModules.SmsListenerModule;
-const SmsListenerEvents = new NativeEventEmitter(SmsListenerModule);
+import {startSmsListener, addSmsReceivedListener} from './SmsListenerModule';
 
 const SmsListenerComp = () => {
-  const handleIncomingSms = event => {
-    const {sender, message} = event;
-    // Do something with the received SMS
-    console.log('Received SMS from:', sender);
-    console.log('Message:', message);
-  };
-
   useEffect(() => {
     requestSMSPermission();
-    SmsListenerModule.startListeningForSms();
+    const smsReceivedSubscription = addSmsReceivedListener(event => {
+      const smsList = event.smsList;
+      // Handle the received SMS messages
+      console.log(smsList);
+    });
 
-    // Register a listener for the 'onSMSReceived' event
-    const smsListenerSubscription = SmsListenerEvents.addListener(
-      'onSMSReceived',
-      handleIncomingSms,
-    );
+    // Start listening for SMS messages
+    startSmsListener();
 
-    // Clean up: stop listening for incoming SMS and remove the listener
+    // Clean up the subscription when the component unmounts
     return () => {
-      SmsListenerModule.stopListeningForSms();
-      smsListenerSubscription.remove();
+      smsReceivedSubscription.remove();
     };
   }, []);
 

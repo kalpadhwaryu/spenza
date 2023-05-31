@@ -1,30 +1,29 @@
 package com.spenza;
 
-import android.Manifest;
-import android.content.BroadcastReceiver;
-import android.content.Context;
+import android.content.ContentResolver;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.pm.PackageManager;
-import android.os.Bundle;
-import android.telephony.SmsMessage;
+import android.database.Cursor;
+import android.net.Uri;
+import android.os.Build;
+import android.provider.Telephony;
 import android.widget.Toast;
-
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.bridge.WritableArray;
+import com.facebook.react.bridge.WritableNativeArray;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class SmsListenerModule extends ReactContextBaseJavaModule {
-    private static final int SMS_PERMISSION_CODE = 123;
-    private static final String EVENT_SMS_RECEIVED = "onSMSReceived";
 
     private final ReactApplicationContext reactContext;
+    private final String SMS_RECEIVED_EVENT = "smsReceived";
 
     public SmsListenerModule(ReactApplicationContext reactContext) {
         super(reactContext);
@@ -37,58 +36,47 @@ public class SmsListenerModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void startListeningForSms() {
-        // Check and request SMS permission if not granted
-        if (ContextCompat.checkSelfPermission(reactContext,
-                Manifest.permission.RECEIVE_SMS) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(getCurrentActivity(),
-                    new String[] { Manifest.permission.RECEIVE_SMS }, SMS_PERMISSION_CODE);
-        }
+    public void startSmsListener() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            // Use Telephony.Sms.Inbox.CONTENT_URI for API level 19 and above
+            Uri uri = Telephony.Sms.Inbox.CONTENT_URI;
+            ContentResolver contentResolver = reactContext.getContentResolver();
+            Cursor cursor = contentResolver.query(uri, null, null, null, null);
 
-        // Register SMS broadcast receiver
-        IntentFilter filter = new IntentFilter();
-        filter.addAction("android.provider.Telephony.SMS_RECEIVED");
-        reactContext.registerReceiver(smsReceiver, filter);
-    }
+            if (cursor != null && cursor.moveToFirst()) {
+                List<String> smsList = new ArrayList<>();
 
-    @ReactMethod
-    public void stopListeningForSms() {
-        // Unregister SMS broadcast receiver
-        reactContext.unregisterReceiver(smsReceiver);
-    }
-
-    // SMS broadcast receiver
-    private final BroadcastReceiver smsReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals("android.provider.Telephony.SMS_RECEIVED")) {
-                Bundle bundle = intent.getExtras();
-                if (bundle != null) {
-                    // Retrieve the SMS messages
-                    Object[] pdus = (Object[]) bundle.get("pdus");
-                    if (pdus != null) {
-                        for (Object pdu : pdus) {
-                            SmsMessage smsMessage = SmsMessage.createFromPdu((byte[]) pdu);
-
-                            String sender = smsMessage.getDisplayOriginatingAddress();
-                            String message = smsMessage.getDisplayMessageBody();
-
-                            // Emit the event to React Native
-                            sendEvent(sender, message);
-                        }
+                do {
+                    String msgData = "";
+                    for (int idx = 0; idx < cursor.getColumnCount(); idx++) {
+                        msgData += " " + cursor.getColumnName(idx) + ":" + cursor.getString(idx);
                     }
+
+                    smsList.add(msgData);
+                } while (cursor.moveToNext());
+
+                cursor.close();
+
+                if (smsList.size() > 0) {
+                    sendSmsReceivedEvent(smsList);
                 }
             }
+        } else {
+            Toast.makeText(reactContext, "SMS reading is not supported on this device.", Toast.LENGTH_SHORT).show();
         }
-    };
+    }
 
-    // Emit event to React Native
-    private void sendEvent(String sender, String message) {
-        WritableMap params = Arguments.createMap();
-        params.putString("sender", sender);
-        params.putString("message", message);
+    private void sendSmsReceivedEvent(List<String> smsList) {
+        WritableMap event = Arguments.createMap();
+        WritableArray smsArray = new WritableNativeArray();
+
+        for (String sms : smsList) {
+            smsArray.pushString(sms);
+        }
+
+        event.putArray("smsList", smsArray);
 
         reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                .emit(EVENT_SMS_RECEIVED, params);
+                .emit(SMS_RECEIVED_EVENT, event);
     }
 }
