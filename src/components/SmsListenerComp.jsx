@@ -24,14 +24,15 @@ const SmsListenerComp = () => {
         // regex
         const amountRegex = /\Rs[\d.,]+/ || /\₹[\d.,]+/ || /Rs([\d.,]+)/;
         const merchantRegex =
-          /\b(?:Swiggy|Zomato|Amazon|Flipkart|Jio|Lenskart|SBI)\b/gi;
-
-        // also add credited debited terms
+          /\b(?:Swiggy|Zomato|Amazon|Flipkart|Myntra|Jio|VI|Airtel|Netflix|Prime|Lenskart|SBI|ICICI|HDFC|BOB|Makemytrip|Goibibo|Airbnb|Expedia|Ola|Uber|Indigo|AirIndia|Vistara)\b/gi;
+        const debitRegex = /\bdebit(?:ed)?\b/i;
 
         const merchants = extractedBody.match(merchantRegex);
         const amounts = extractedBody.match(amountRegex);
+        const isDebit = debitRegex.test(extractedBody);
 
         if (
+          isDebit &&
           amounts &&
           amounts.length > 0 &&
           merchants &&
@@ -39,16 +40,42 @@ const SmsListenerComp = () => {
         ) {
           const extractedAmount = amounts[0];
           const extractedMerchant = merchants[0];
+          console.log(extractedMerchant);
           let category;
           switch (extractedMerchant) {
-            case 'Swiggy' || 'Zomato':
+            case 'Swiggy':
+            case 'Zomato':
               category = 'Food';
               break;
+            case 'Amazon':
+            case 'Flipkart':
+            case 'Myntra':
+            case 'Lenskart':
+              category = 'Shopping';
+              break;
             case 'SBI':
+            case 'ICICI':
+            case 'HDFC':
+            case 'BOB':
               category = 'Banking';
               break;
-            case 'Jio' || 'Lenskart':
-              category = 'Other expenses';
+            case 'Jio':
+            case 'Netflix':
+            case 'Prime':
+            case 'VI':
+            case 'Airtel':
+              category = 'Recharges & Subscriptions';
+              break;
+            case 'Makemytrip':
+            case 'Goibibo':
+            case 'Airbnb':
+            case 'Expedia':
+            case 'Ola':
+            case 'Uber':
+            case 'Indigo':
+            case 'AirIndia':
+            case 'Vistara':
+              category = 'Travel';
               break;
             default:
               break;
