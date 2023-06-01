@@ -40,7 +40,6 @@ const SmsListenerComp = () => {
         ) {
           const extractedAmount = amounts[0];
           const extractedMerchant = merchants[0];
-          console.log(extractedMerchant);
           let category;
           switch (extractedMerchant) {
             case 'Swiggy':
@@ -85,7 +84,7 @@ const SmsListenerComp = () => {
             amount: extractedAmount,
             merchant: extractedMerchant,
             category: category,
-            date: usefulDate.toISOString().split('T')[0],
+            date: usefulDate,
           };
           messagesObj.push(newObj);
         }
@@ -121,10 +120,16 @@ const SmsListenerComp = () => {
   return (
     <ScrollView>
       {receivedSMS.map(each => {
+        const purchaseDate =
+          new Date(each.date).getDate() +
+          '-' +
+          (new Date(each.date).getMonth() + 1) +
+          '-' +
+          new Date(each.date).getFullYear();
         return (
           <View style={tw`my-2`}>
             <Text style={tw`text-black`}>{each.amount}</Text>
-            <Text style={tw`text-black`}>{each.date}</Text>
+            <Text style={tw`text-black`}>{purchaseDate}</Text>
             <Text style={tw`text-black`}>{each.merchant}</Text>
             <Text style={tw`text-black`}>{each.category}</Text>
           </View>
