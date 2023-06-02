@@ -139,10 +139,10 @@ const Home = () => {
         </Text>
       </View>
       <Text style={tw`text-black font-bold text-xl my-2 text-xl`}>
-        Expenses Today
+        Recent Expenses
       </Text>
       <View style={tw`my-3`}>
-        {receivedSMS.map((each, i) => {
+        {receivedSMS.slice(0, 6).map((each, i) => {
           return (
             <Card
               key={i}
