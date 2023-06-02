@@ -1,5 +1,7 @@
-import {NativeModules, NativeEventEmitter} from 'react-native';
+import {NativeModules, NativeEventEmitter, LogBox} from 'react-native';
 const {SmsListenerModule} = NativeModules;
+
+LogBox.ignoreLogs(['new NativeEventEmitter']);
 
 export const startSmsListener = () => {
   SmsListenerModule.startSmsListener();
