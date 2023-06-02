@@ -1,9 +1,5 @@
 import React, {useEffect} from 'react';
-import {View} from 'react-native';
-import tw from 'twrnc';
 import SplashScreen from 'react-native-splash-screen';
-import SmsListener from './src/components/SmsListenerComp';
-import Header from './src/components/Header';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -32,10 +28,6 @@ const App = () => {
     SplashScreen.hide();
   }, []);
   return (
-    // <View style={tw`bg-white h-full`}>
-    //   <Header />
-    //   <SmsListener />
-    // </View>
     <NavigationContainer>
       <Tab.Navigator
         screenOptions={({route}) => ({
