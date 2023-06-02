@@ -11,6 +11,8 @@ import {create} from 'zustand';
 export const HOME_ROUTE = 'Home';
 
 const useExpensesStore = create(set => ({
+  receivedSMS: [],
+  setReceivedSMS: receivedSMS => set(() => ({receivedSMS})),
   totalMonthlyAmount: 0,
   setTotalMonthlyAmount: totalMonthlyAmount =>
     set(() => ({totalMonthlyAmount})),
@@ -34,9 +36,9 @@ const isDateInWeek = (inputDate, startDateString, endDateString) => {
 };
 
 const Home = () => {
-  const [receivedSMS, setReceivedSMS] = useState([]);
   const [totalWeeklyAmount, setTotalWeeklyAmount] = useState(0);
-  const {setTotalMonthlyAmount} = useExpensesStore();
+  const {receivedSMS, setReceivedSMS, setTotalMonthlyAmount} =
+    useExpensesStore();
 
   useEffect(() => {
     requestSMSPermission();
