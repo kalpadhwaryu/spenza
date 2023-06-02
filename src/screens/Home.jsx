@@ -10,7 +10,7 @@ import {create} from 'zustand';
 
 export const HOME_ROUTE = 'Home';
 
-const useExpensesStore = create(set => ({
+export const useExpensesStore = create(set => ({
   receivedSMS: [],
   setReceivedSMS: receivedSMS => set(() => ({receivedSMS})),
   totalMonthlyAmount: 0,
