@@ -6,12 +6,37 @@ import {
 } from '../components/SmsListenerModule';
 import tw from 'twrnc';
 import Card from '../components/Card';
+import {create} from 'zustand';
 
 export const HOME_ROUTE = 'Home';
 
+const useExpensesStore = create(set => ({
+  totalMonthlyAmount: 0,
+  setTotalMonthlyAmount: totalMonthlyAmount =>
+    set(() => ({totalMonthlyAmount})),
+}));
+
+const startOfWeek = inputDate => {
+  const diff =
+    inputDate.getDate() -
+    inputDate.getDay() +
+    (inputDate.getDay() === 0 ? -6 : 1);
+  return new Date(inputDate.setDate(diff));
+};
+
+const endOfWeek = inputDate => {
+  const lastday = inputDate.getDate() - (inputDate.getDay() - 1) + 6;
+  return new Date(inputDate.setDate(lastday));
+};
+
+const isDateInWeek = (inputDate, startDateString, endDateString) => {
+  return inputDate >= startDateString && inputDate <= endDateString;
+};
+
 const Home = () => {
   const [receivedSMS, setReceivedSMS] = useState([]);
-  const [totalMonthlyAmount, setTotalMonthlyAmount] = useState(0);
+  const [totalWeeklyAmount, setTotalWeeklyAmount] = useState(0);
+  const {setTotalMonthlyAmount} = useExpensesStore();
 
   useEffect(() => {
     requestSMSPermission();
@@ -24,7 +49,8 @@ const Home = () => {
   const smsReceivedSubscription = addSmsReceivedListener(event => {
     const smsList = event.smsList;
     const messagesObj = [];
-    let monthlyAmount = 0;
+    let monthlyAmount = 0,
+      weeklyAmount = 0;
 
     smsList.forEach(message => {
       const start = message.indexOf('body:') + 5;
@@ -105,9 +131,19 @@ const Home = () => {
         if (new Date(usefulDate).getMonth() === new Date().getMonth()) {
           monthlyAmount += extractedAmount;
         }
+        if (
+          isDateInWeek(
+            new Date(),
+            startOfWeek(new Date(usefulDate)),
+            endOfWeek(new Date(usefulDate)),
+          )
+        ) {
+          weeklyAmount += extractedAmount;
+        }
       }
     });
     setReceivedSMS(messagesObj);
+    setTotalWeeklyAmount(weeklyAmount);
     setTotalMonthlyAmount(monthlyAmount);
   });
 
@@ -132,10 +168,12 @@ const Home = () => {
   return (
     <ScrollView style={tw`p-3`}>
       <Text style={tw`text-black font-bold text-2xl my-2`}>Home</Text>
-      <View style={tw`m-2 py-3`}>
-        <Text style={tw`text-xl text-center my-2`}>This month spend</Text>
+      <View style={tw`m-2 py-3 border rounded`}>
+        <Text style={tw`text-black text-xl text-center my-2`}>
+          This week's spend
+        </Text>
         <Text style={tw`text-black text-4xl text-center my-1`}>
-          {`₹` + totalMonthlyAmount}
+          {`₹` + totalWeeklyAmount}
         </Text>
       </View>
       <Text style={tw`text-black font-bold text-xl my-2 text-xl`}>
