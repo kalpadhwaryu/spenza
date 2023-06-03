@@ -80,7 +80,7 @@ const YearlyExpenses = () => {
   }, [value, selectedMonthYearData, travel, food, shopping, banking, rs]);
 
   return (
-    <ScrollView style={tw`mb-28`}>
+    <ScrollView>
       <Text style={tw`text-black`}>
         Select a year to categorize your expenses across categories like Food,
         Travel, Shopping, etc.
