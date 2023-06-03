@@ -1,10 +1,17 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, TouchableOpacity, Dimensions} from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Dimensions,
+  ScrollView,
+} from 'react-native';
 import MonthYearPicker from 'react-native-month-year-picker';
 import {useExpensesStore} from '../screens/Home';
 import {dummyData} from '../data/DummyData';
 import {PieChart} from 'react-native-chart-kit';
 import tw from 'twrnc';
+import Card from './Card';
 
 const MonthlyExpenses = () => {
   const [date, setDate] = useState(new Date());
@@ -57,9 +64,20 @@ const MonthlyExpenses = () => {
           return acc + curr.amount;
         }, 0),
     );
-    setDataToBePassed(
-      generateDataForChart(travel, food, shopping, banking, rs),
-    );
+    if (
+      travel === 0 &&
+      food === 0 &&
+      shopping === 0 &&
+      banking === 0 &&
+      rs === 0
+    ) {
+      setShowPieChart(false);
+    } else {
+      setDataToBePassed(
+        generateDataForChart(travel, food, shopping, banking, rs),
+      );
+      setShowPieChart(true);
+    }
   }, [date, selectedMonthYearData, travel, food, shopping, banking, rs]);
 
   const generateDataForChart = (
@@ -92,7 +110,7 @@ const MonthlyExpenses = () => {
         legendFontSize: 15,
       },
       {
-        name: 'Recharges & Subscriptions',
+        name: 'Subscriptions',
         amount: rsExpense,
         color: '#ffffff',
         legendFontColor: '#7F7F7F',
@@ -122,9 +140,9 @@ const MonthlyExpenses = () => {
     setShowPieChart(true);
   };
   return (
-    <View>
+    <ScrollView>
       <Text style={tw`text-black`}>
-        Select month and year to categorize your expenses accros categories like
+        Select month and year to categorize your expenses across categories like
         Food, Travel, Shopping, etc.
       </Text>
       <TouchableOpacity
@@ -140,34 +158,44 @@ const MonthlyExpenses = () => {
           minimumDate={new Date(2021, 0)}
         />
       )}
+      <Text style={tw`text-center text-black text-xl font-bold my-2`}>
+        {selectedMonthYearData.length > 0 ? `Monthly` : `No`} Expenses for{' '}
+        {new Date(date).toLocaleString('default', {
+          month: 'short',
+        }) +
+          ' ' +
+          new Date(date).getFullYear()}
+      </Text>
       {showPieChart && (
-        <PieChart
-          data={dataToBePassed}
-          width={Dimensions.get('window').width}
-          height={220}
-          chartConfig={{
-            decimalPlaces: 2,
-            color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-            labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-          }}
-          accessor={'amount'}
-          backgroundColor={'transparent'}
-        />
+        <>
+          <PieChart
+            data={dataToBePassed}
+            width={Dimensions.get('window').width}
+            height={220}
+            chartConfig={{
+              decimalPlaces: 2,
+              color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+              labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+            }}
+            accessor={'amount'}
+            backgroundColor={'transparent'}
+          />
+          <View>
+            {selectedMonthYearData.map((each, i) => {
+              return (
+                <Card
+                  key={i}
+                  name={each.merchant}
+                  amount={each.amount}
+                  category={each.category}
+                  date={each.date}
+                />
+              );
+            })}
+          </View>
+        </>
       )}
-      <View>
-        <Text>
-          {new Date(date).getMonth() + 1 + ' ' + new Date(date).getFullYear()}
-        </Text>
-        {selectedMonthYearData.map(each => {
-          return (
-            <View>
-              <Text>{each.merchant}</Text>
-              <Text>{each.category}</Text>
-            </View>
-          );
-        })}
-      </View>
-    </View>
+    </ScrollView>
   );
 };
 
