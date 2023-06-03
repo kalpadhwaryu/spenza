@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, TouchableOpacity} from 'react-native';
+import {View, Text, TouchableOpacity, ToastAndroid} from 'react-native';
 import tw from 'twrnc';
 import {useExpensesStore} from './Home';
 import {dummyData} from '../data/DummyData';
@@ -8,6 +8,10 @@ export const SPENZA_ROUTE = 'Spenza';
 
 const Spenza = () => {
   const {setReceivedSMS} = useExpensesStore();
+
+  const showToast = () => {
+    ToastAndroid.show('Using dummy data now!', ToastAndroid.SHORT);
+  };
 
   return (
     <View style={tw`p-4 items-center justify-center h-full bg-white`}>
@@ -22,7 +26,10 @@ const Spenza = () => {
       </Text>
       <TouchableOpacity
         style={tw`bg-blue-400 px-3 py-2 rounded my-4`}
-        onPress={() => setReceivedSMS(dummyData)}>
+        onPress={() => {
+          setReceivedSMS(dummyData);
+          showToast();
+        }}>
         <Text style={tw`text-black`}>Use Dummy Data</Text>
       </TouchableOpacity>
     </View>

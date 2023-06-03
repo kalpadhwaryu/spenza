@@ -1,5 +1,11 @@
-import React, {useEffect, useState} from 'react';
-import {View, Text, ScrollView, PermissionsAndroid} from 'react-native';
+import React, {useEffect} from 'react';
+import {
+  View,
+  Text,
+  ScrollView,
+  PermissionsAndroid,
+  ToastAndroid,
+} from 'react-native';
 import {
   startSmsListener,
   addSmsReceivedListener,
@@ -130,9 +136,9 @@ const Home = () => {
         },
       );
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        console.log('SMS permission granted');
+        ToastAndroid.show('SMS permission granted!', ToastAndroid.SHORT);
       } else {
-        console.log('SMS permission denied');
+        ToastAndroid.show('SMS permission denied.', ToastAndroid.SHORT);
       }
     } catch (error) {
       console.log('Failed to request SMS permission:', error);
