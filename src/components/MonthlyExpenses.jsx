@@ -4,7 +4,7 @@ import MonthYearPicker from 'react-native-month-year-picker';
 import {useExpensesStore} from '../screens/Home';
 import {dummyData} from '../data/DummyData';
 import {PieChart} from 'react-native-chart-kit';
-import tw from 'twrnc'
+import tw from 'twrnc';
 
 const MonthlyExpenses = () => {
   const [date, setDate] = useState(new Date());
@@ -66,8 +66,8 @@ const MonthlyExpenses = () => {
     travelExpense = 0,
     foodExpense = 0,
     shoppingExpense = 0,
-    rsExpense = 0,
     bankingExpense = 0,
+    rsExpense = 0,
   ) => {
     return [
       {
@@ -154,6 +154,19 @@ const MonthlyExpenses = () => {
           backgroundColor={'transparent'}
         />
       )}
+      <View>
+        <Text>
+          {new Date(date).getMonth() + 1 + ' ' + new Date(date).getFullYear()}
+        </Text>
+        {selectedMonthYearData.map(each => {
+          return (
+            <View>
+              <Text>{each.merchant}</Text>
+              <Text>{each.category}</Text>
+            </View>
+          );
+        })}
+      </View>
     </View>
   );
 };
