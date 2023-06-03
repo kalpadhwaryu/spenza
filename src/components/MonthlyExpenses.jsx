@@ -140,7 +140,7 @@ const MonthlyExpenses = () => {
     );
   };
   return (
-    <ScrollView>
+    <ScrollView style={tw`mb-28`}>
       <Text style={tw`text-black`}>
         Select month and year to categorize your expenses across categories like
         Food, Travel, Shopping, etc.
