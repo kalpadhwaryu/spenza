@@ -5,11 +5,10 @@ import tw from 'twrnc';
 const SingleButton = ({option, isSelected, onSelect, height = 40}) => {
   return (
     <TouchableOpacity
-      underlayColor="white"
       style={[
-        tw`mx-1 w-21 justify-center ${
+        tw`mx-1 w-21 justify-center border-black rounded border px-0.5 ${
           isSelected ? 'bg-blue-400' : 'bg-white'
-        } border-black rounded border px-0.5`,
+        }`,
         {
           height,
         },
@@ -29,14 +28,13 @@ const SingleButton = ({option, isSelected, onSelect, height = 40}) => {
 
 const ButtonGroup = ({values, selectedValue, ...rest}) => {
   return (
-    <View style={tw`flex-row ${rest.fitContent ? 'justify-around' : ''}`}>
-      {values.map((each, index) => (
+    <View style={tw`flex-row justify-around`}>
+      {values.map(each => (
         <SingleButton
           {...rest}
           key={each.label}
           option={each}
           isSelected={selectedValue === each.value}
-          isLastButton={index === values.length - 1}
         />
       ))}
     </View>

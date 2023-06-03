@@ -156,7 +156,7 @@ const MonthlyExpenses = () => {
       </Text>
       <TouchableOpacity
         onPress={() => showPicker(true)}
-        style={tw`w-1/5 bg-blue-400 self-center rounded py-1 px-2 my-3`}>
+        style={tw`bg-blue-400 self-center rounded w-21 py-1 my-3 border`}>
         <Text style={tw`text-white text-center`}>Select</Text>
       </TouchableOpacity>
       {show && (
@@ -191,7 +191,9 @@ const MonthlyExpenses = () => {
             accessor={'amount'}
             backgroundColor={'transparent'}
           />
-          <Text style={tw`self-end -mt-5 mb-1 text-black mr-3`}>R & S: Recharges & Subscriptions</Text>
+          <Text style={tw`self-end -mt-5 mb-1 text-black mr-3`}>
+            R & S: Recharges & Subscriptions
+          </Text>
           <View>
             {selectedMonthYearData.map((each, i) => {
               return (
