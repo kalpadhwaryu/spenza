@@ -62,6 +62,7 @@ export const generateDataForChart = (
 const MonthlyExpenses = () => {
   const [date, setDate] = useState(new Date());
   const [show, setShow] = useState(false);
+  const [showExpenseHeading, setExpenseHeading] = useState(false);
   const [selectedMonthYearData, setSelectedMonthYearData] = useState([]);
   const {receivedSMS} = useExpensesStore();
   const [travel, setTravel] = useState(0);
@@ -137,6 +138,7 @@ const MonthlyExpenses = () => {
           each.date.getFullYear() === selectedDate.getFullYear(),
       ),
     );
+    setExpenseHeading(true);
     setShowPieChart(true);
   };
   return (
@@ -158,14 +160,16 @@ const MonthlyExpenses = () => {
           minimumDate={new Date(2021, 0)}
         />
       )}
-      <Text style={tw`text-center text-black text-xl font-bold my-2`}>
-        {selectedMonthYearData.length > 0 ? `Monthly` : `No`} Expenses for{' '}
-        {new Date(date).toLocaleString('default', {
-          month: 'short',
-        }) +
-          ' ' +
-          new Date(date).getFullYear()}
-      </Text>
+      {showExpenseHeading && (
+        <Text style={tw`text-center text-black text-xl font-bold my-2`}>
+          {selectedMonthYearData.length > 0 ? `Monthly` : `No`} Expenses for{' '}
+          {new Date(date).toLocaleString('default', {
+            month: 'short',
+          }) +
+            ' ' +
+            new Date(date).getFullYear()}
+        </Text>
+      )}
       {showPieChart && (
         <>
           <PieChart

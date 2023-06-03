@@ -16,6 +16,7 @@ const data = [
 
 const YearlyExpenses = () => {
   const [selectedMonthYearData, setSelectedMonthYearData] = useState([]);
+  const [showExpenseHeading, setExpenseHeading] = useState(false);
   const {receivedSMS} = useExpensesStore();
   const [travel, setTravel] = useState(0);
   const [food, setFood] = useState(0);
@@ -24,7 +25,7 @@ const YearlyExpenses = () => {
   const [banking, setBanking] = useState(0);
   const [dataToBePassed, setDataToBePassed] = useState([]);
   const [showPieChart, setShowPieChart] = useState(false);
-  const [value, setValue] = useState(2023);
+  const [value, setValue] = useState('');
 
   useEffect(() => {
     setTravel(
@@ -79,13 +80,13 @@ const YearlyExpenses = () => {
   }, [value, selectedMonthYearData, travel, food, shopping, banking, rs]);
 
   return (
-    <ScrollView style={tw`mb-32`}>
+    <ScrollView style={tw`mb-28`}>
       <Text style={tw`text-black`}>
         Select a year to categorize your expenses across categories like Food,
         Travel, Shopping, etc.
       </Text>
       <Dropdown
-        style={tw`w-2/5`}
+        style={tw`w-2/5 self-center border px-1 my-1`}
         data={data}
         maxHeight={300}
         labelField="label"
@@ -99,13 +100,16 @@ const YearlyExpenses = () => {
               each => each.date.getFullYear() === parseInt(item.value),
             ),
           );
+          setExpenseHeading(true);
           setShowPieChart(true);
         }}
       />
-      <Text style={tw`text-center text-black text-xl font-bold my-2`}>
-        {selectedMonthYearData.length > 0 ? `Yearly` : `No`} Expenses for{' '}
-        {value}
-      </Text>
+      {showExpenseHeading && (
+        <Text style={tw`text-center text-black text-xl font-bold my-2`}>
+          {selectedMonthYearData.length > 0 ? `Yearly` : `No`} Expenses for{' '}
+          {value}
+        </Text>
+      )}
       {showPieChart && (
         <>
           <PieChart
