@@ -8,7 +8,6 @@ import {
 } from 'react-native';
 import MonthYearPicker from 'react-native-month-year-picker';
 import {useExpensesStore} from '../screens/Home';
-import {dummyData} from '../data/DummyData';
 import {PieChart} from 'react-native-chart-kit';
 import tw from 'twrnc';
 import Card from './Card';
@@ -119,10 +118,11 @@ const MonthlyExpenses = () => {
       rs === 0
     ) {
       setShowPieChart(false);
-    } else {
+    } else if (selectedMonthYearData.length > 0) {
       setDataToBePassed(
         generateDataForChart(travel, food, shopping, banking, rs),
       );
+      setExpenseHeading(true);
       setShowPieChart(true);
     }
   }, [date, selectedMonthYearData, travel, food, shopping, banking, rs]);
@@ -132,14 +132,12 @@ const MonthlyExpenses = () => {
     showPicker(false);
     setDate(selectedDate);
     setSelectedMonthYearData(
-      dummyData.filter(
+      receivedSMS.filter(
         each =>
           each.date.getMonth() === selectedDate.getMonth() &&
           each.date.getFullYear() === selectedDate.getFullYear(),
       ),
     );
-    setExpenseHeading(true);
-    setShowPieChart(true);
   };
   return (
     <ScrollView>

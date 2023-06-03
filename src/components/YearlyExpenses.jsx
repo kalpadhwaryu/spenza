@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text, Dimensions, ScrollView} from 'react-native';
 import {useExpensesStore} from '../screens/Home';
-import {dummyData} from '../data/DummyData';
 import {PieChart} from 'react-native-chart-kit';
 import tw from 'twrnc';
 import Card from './Card';
@@ -71,10 +70,11 @@ const YearlyExpenses = () => {
       rs === 0
     ) {
       setShowPieChart(false);
-    } else {
+    } else if (selectedMonthYearData.length > 0) {
       setDataToBePassed(
         generateDataForChart(travel, food, shopping, banking, rs),
       );
+      setExpenseHeading(true);
       setShowPieChart(true);
     }
   }, [value, selectedMonthYearData, travel, food, shopping, banking, rs]);
@@ -96,7 +96,7 @@ const YearlyExpenses = () => {
         onChange={item => {
           setValue(item.value);
           setSelectedMonthYearData(
-            dummyData.filter(
+            receivedSMS.filter(
               each => each.date.getFullYear() === parseInt(item.value),
             ),
           );
