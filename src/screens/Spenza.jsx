@@ -10,7 +10,7 @@ const Spenza = () => {
   const {setReceivedSMS} = useExpensesStore();
 
   return (
-    <View style={tw`mx-4 items-center justify-center h-full`}>
+    <View style={tw`p-4 items-center justify-center h-full bg-white`}>
       <Text style={tw`text-black text-3xl my-2 font-bold`}>Spenza</Text>
       <Text style={tw`text-black text-black my-2`}>
         Spenza is a spend analytics app which reads users SMS, filters out
@@ -21,7 +21,7 @@ const Spenza = () => {
         Switch to Dummy Data to get a better visualization experience
       </Text>
       <TouchableOpacity
-        style={tw`bg-blue-300 px-3 py-2 rounded my-4`}
+        style={tw`bg-blue-400 px-3 py-2 rounded my-4`}
         onPress={() => setReceivedSMS(dummyData)}>
         <Text style={tw`text-black`}>Use Dummy Data</Text>
       </TouchableOpacity>

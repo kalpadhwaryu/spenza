@@ -11,7 +11,7 @@ const Expenses = () => {
   const [expenseType, setExpenseType] = useState('monthly');
 
   return (
-    <View style={tw`p-3`}>
+    <View style={tw`p-3 h-full bg-white`}>
       <Text style={tw`text-black font-bold text-2xl my-2`}>Expenses</Text>
       <View style={tw`items-center my-2`}>
         <ButtonGroup

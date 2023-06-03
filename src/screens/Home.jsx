@@ -139,14 +139,14 @@ const Home = () => {
     }
   };
   return (
-    <ScrollView style={tw`p-3`}>
+    <ScrollView style={tw`p-3 bg-white h-full`}>
       <Text style={tw`text-black font-bold text-2xl my-2`}>Home</Text>
       <View style={tw`m-2 py-3 border rounded`}>
         <Text style={tw`text-black text-2xl text-center my-2`}>
           Welcome to Spenza!
         </Text>
         <Text style={tw`text-black text-xl text-center my-1 mx-2`}>
-          Categorizes your expenses into Travel, Food, Shopping
+          Categorizes your expenses into Travel, Food, Shopping, etc.
         </Text>
       </View>
       <Text style={tw`text-black font-bold text-xl my-2 text-xl`}>

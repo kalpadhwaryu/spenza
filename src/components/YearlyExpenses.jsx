@@ -87,11 +87,14 @@ const YearlyExpenses = () => {
       </Text>
       <Dropdown
         style={tw`w-2/5 self-center border px-1 my-1`}
+        itemTextStyle={tw`text-black`}
+        selectedTextStyle={tw`text-black`}
         data={data}
         maxHeight={300}
         labelField="label"
         valueField="value"
         placeholder={'Select Year'}
+        placeholderStyle={tw`text-black`}
         value={value}
         onChange={item => {
           setValue(item.value);
