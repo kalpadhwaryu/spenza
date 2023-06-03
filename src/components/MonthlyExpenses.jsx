@@ -13,6 +13,52 @@ import {PieChart} from 'react-native-chart-kit';
 import tw from 'twrnc';
 import Card from './Card';
 
+export const generateDataForChart = (
+  travelExpense = 0,
+  foodExpense = 0,
+  shoppingExpense = 0,
+  bankingExpense = 0,
+  rsExpense = 0,
+) => {
+  return [
+    {
+      name: 'Travel',
+      amount: travelExpense,
+      color: 'rgba(131, 167, 234, 1)',
+      legendFontColor: '#7F7F7F',
+      legendFontSize: 15,
+    },
+    {
+      name: 'Food',
+      amount: foodExpense,
+      color: '#F00',
+      legendFontColor: '#7F7F7F',
+      legendFontSize: 15,
+    },
+    {
+      name: 'Shopping',
+      amount: shoppingExpense,
+      color: 'red',
+      legendFontColor: '#7F7F7F',
+      legendFontSize: 15,
+    },
+    {
+      name: 'Subscriptions',
+      amount: rsExpense,
+      color: '#ffffff',
+      legendFontColor: '#7F7F7F',
+      legendFontSize: 15,
+    },
+    {
+      name: 'Banking',
+      amount: bankingExpense,
+      color: 'rgb(0, 0, 255)',
+      legendFontColor: '#7F7F7F',
+      legendFontSize: 15,
+    },
+  ];
+};
+
 const MonthlyExpenses = () => {
   const [date, setDate] = useState(new Date());
   const [show, setShow] = useState(false);
@@ -79,52 +125,6 @@ const MonthlyExpenses = () => {
       setShowPieChart(true);
     }
   }, [date, selectedMonthYearData, travel, food, shopping, banking, rs]);
-
-  const generateDataForChart = (
-    travelExpense = 0,
-    foodExpense = 0,
-    shoppingExpense = 0,
-    bankingExpense = 0,
-    rsExpense = 0,
-  ) => {
-    return [
-      {
-        name: 'Travel',
-        amount: travelExpense,
-        color: 'rgba(131, 167, 234, 1)',
-        legendFontColor: '#7F7F7F',
-        legendFontSize: 15,
-      },
-      {
-        name: 'Food',
-        amount: foodExpense,
-        color: '#F00',
-        legendFontColor: '#7F7F7F',
-        legendFontSize: 15,
-      },
-      {
-        name: 'Shopping',
-        amount: shoppingExpense,
-        color: 'red',
-        legendFontColor: '#7F7F7F',
-        legendFontSize: 15,
-      },
-      {
-        name: 'Subscriptions',
-        amount: rsExpense,
-        color: '#ffffff',
-        legendFontColor: '#7F7F7F',
-        legendFontSize: 15,
-      },
-      {
-        name: 'Banking',
-        amount: bankingExpense,
-        color: 'rgb(0, 0, 255)',
-        legendFontColor: '#7F7F7F',
-        legendFontSize: 15,
-      },
-    ];
-  };
 
   const onValueChange = (event, newDate) => {
     const selectedDate = newDate || date;
