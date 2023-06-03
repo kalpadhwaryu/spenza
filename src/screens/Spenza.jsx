@@ -12,7 +12,7 @@ const Spenza = () => {
   return (
     <View style={tw`p-4 items-center justify-center h-full bg-white`}>
       <Text style={tw`text-black text-3xl my-2 font-bold`}>Spenza</Text>
-      <Text style={tw`text-black text-black my-2`}>
+      <Text style={tw`text-black text-black my-2 text-center`}>
         Spenza is a spend analytics app which reads users SMS, filters out
         expense/spend messages using keywords and categorizes them into Travel,
         Food, Shopping, Subscription expenses, etc.{' '}

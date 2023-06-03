@@ -1,5 +1,17 @@
 export const dummyData = [
   {
+    amount: 699,
+    merchant: 'Airtel',
+    date: new Date('2023-06-02'),
+    category: 'Recharges & Subscriptions',
+  },
+  {
+    amount: 8999,
+    merchant: 'Airbnb',
+    date: new Date('2023-05-13'),
+    category: 'Travel',
+  },
+  {
     amount: 3000,
     merchant: 'Amazon',
     date: new Date('2022-11-12'),
@@ -61,6 +73,18 @@ export const dummyData = [
   },
   {
     amount: 1200,
+    merchant: 'Swiggy',
+    date: new Date('2021-07-20'),
+    category: 'Food',
+  },
+  {
+    amount: 1200,
+    merchant: 'Amazon',
+    date: new Date('2021-07-15'),
+    category: 'Shopping',
+  },
+  {
+    amount: 1200,
     merchant: 'Airbnb',
     date: new Date('2021-08-25'),
     category: 'Travel',
@@ -82,6 +106,12 @@ export const dummyData = [
     merchant: 'Prime',
     date: new Date('2021-11-01'),
     category: 'Recharges & Subscriptions',
+  },
+  {
+    amount: 555,
+    merchant: 'Expedia',
+    date: new Date('2021-12-06'),
+    category: 'Travel',
   },
 ];
 

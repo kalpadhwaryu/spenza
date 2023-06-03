@@ -81,7 +81,7 @@ const YearlyExpenses = () => {
 
   return (
     <ScrollView>
-      <Text style={tw`text-black`}>
+      <Text style={tw`text-black text-center my-1`}>
         Select a year to categorize your expenses across categories like Food,
         Travel, Shopping, etc.
       </Text>
