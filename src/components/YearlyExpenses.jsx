@@ -77,7 +77,16 @@ const YearlyExpenses = () => {
       setExpenseHeading(true);
       setShowPieChart(true);
     }
-  }, [value, selectedMonthYearData, travel, food, shopping, banking, rs]);
+  }, [
+    value,
+    selectedMonthYearData,
+    travel,
+    food,
+    shopping,
+    banking,
+    rs,
+    receivedSMS,
+  ]);
 
   return (
     <ScrollView>

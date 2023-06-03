@@ -125,7 +125,16 @@ const MonthlyExpenses = () => {
       setExpenseHeading(true);
       setShowPieChart(true);
     }
-  }, [date, selectedMonthYearData, travel, food, shopping, banking, rs]);
+  }, [
+    date,
+    selectedMonthYearData,
+    travel,
+    food,
+    shopping,
+    banking,
+    rs,
+    receivedSMS,
+  ]);
 
   const onValueChange = (event, newDate) => {
     const selectedDate = newDate || date;
