@@ -5,14 +5,14 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Home, {HOME_ROUTE} from './src/screens/Home';
 import Expenses, {EXPENSES_ROUTE} from './src/screens/Expenses';
-import Settings, {SETTINGS_ROUTE} from './src/screens/Settings';
+import Spenza, {SPENZA_ROUTE} from './src/screens/Spenza';
 
 const Tab = createBottomTabNavigator();
 
 const ICONS_MAP = {
   Home: 'home',
   Expenses: 'wallet',
-  Settings: 'settings',
+  Spenza: 'settings',
 };
 
 const generateTabBarIcon =
@@ -38,7 +38,7 @@ const App = () => {
         })}>
         <Tab.Screen name={HOME_ROUTE} component={Home} />
         <Tab.Screen name={EXPENSES_ROUTE} component={Expenses} />
-        <Tab.Screen name={SETTINGS_ROUTE} component={Settings} />
+        <Tab.Screen name={SPENZA_ROUTE} component={Spenza} />
       </Tab.Navigator>
     </NavigationContainer>
   );
