@@ -136,11 +136,15 @@ const YearlyExpenses = () => {
             accessor={'amount'}
             backgroundColor={'transparent'}
           />
+          <Text style={tw`self-end -mt-5 mb-1 text-black mr-3`}>
+            R & S: Recharges & Subscriptions
+          </Text>
           <View>
             {selectedMonthYearData.map((each, i) => {
               return (
                 <Card
                   key={i}
+                  index={i}
                   name={each.merchant}
                   amount={each.amount}
                   category={each.category}

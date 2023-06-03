@@ -141,12 +141,12 @@ const Home = () => {
   return (
     <ScrollView style={tw`p-3 bg-white h-full`}>
       <Text style={tw`text-black font-bold text-2xl my-2`}>Home</Text>
-      <View style={tw`m-2 py-3 border rounded`}>
+      <View style={tw`m-2 py-3 border rounded bg-blue-200`}>
         <Text style={tw`text-black text-2xl text-center my-2`}>
           Welcome to Spenza!
         </Text>
         <Text style={tw`text-black text-xl text-center my-1 mx-2`}>
-          Categorizes your expenses into Travel, Food, Shopping, etc.
+          Know your expenses across Travel, Food, Shopping...
         </Text>
       </View>
       <Text style={tw`text-black font-bold text-xl my-2 text-xl`}>
@@ -157,6 +157,7 @@ const Home = () => {
           return (
             <Card
               key={i}
+              index={i}
               name={each.merchant}
               amount={each.amount}
               category={each.category}
